@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Birthday 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(-45deg,#ffd6e8,#ffeaf4,#ffc2dd,#ffe0f0);
+background-size:400% 400%;
+animation:bgMove 12s ease infinite;
+overflow-x:hidden;
+color:#d63384;
+text-align:center;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.section{
+display:none;
+min-height:100vh;
+padding:60px 20px;
+animation:fadeIn 1.5s ease;
+}
+
+.active{display:block;}
+
+@keyframes fadeIn{
+from{opacity:0;transform:scale(0.98);}
+to{opacity:1;transform:scale(1);}
+}
+
+h1{
+font-family:'Great Vibes',cursive;
+font-size:4rem;
+margin:20px 0;
+animation:glow 2s infinite alternate;
+}
+
+.bigText{
+font-size:5rem;
+}
+
+@keyframes glow{
+from{text-shadow:0 0 10px #ff99c8;}
+to{text-shadow:0 0 30px #ff4da6;}
+}
+
+button{
+background:#ff99c8;
+border:none;
+padding:14px 30px;
+border-radius:30px;
+color:white;
+font-size:16px;
+cursor:pointer;
+margin-top:25px;
+box-shadow:0 0 25px rgba(255,105,180,0.7);
+transition:0.3s;
+}
+
+button:hover{transform:scale(1.1);}
+
+input{
+padding:12px;
+border-radius:25px;
+border:none;
+text-align:center;
+}
+
+.heart{
+position:fixed;
+bottom:-20px;
+animation:floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(0);opacity:1;}
+100%{transform:translateY(-100vh);opacity:0;}
+}
+
+.confetti{
+position:fixed;
+width:8px;
+height:8px;
+top:-10px;
+animation:confettiFall 4s linear forwards;
+}
+
+@keyframes confettiFall{
+to{transform:translateY(110vh) rotate(360deg);}
+}
+
+.track{
+position:fixed;
+bottom:0;
+width:100%;
+height:60px;
+background:repeating-linear-gradient(
+to right,
+#ff99c8 0px,
+#ff99c8 20px,
+white 20px,
+white 40px
+);
+}
+
+.car{
+position:fixed;
+bottom:10px;
+font-size:45px;
+animation:drive 8s linear infinite;
+}
+
+@keyframes drive{
+0%{left:-100px;}
+100%{left:110%;}
+}
+
+.photo{
+width:280px;
+border-radius:25px;
+box-shadow:0 0 40px pink;
+margin-top:20px;
+}
+
+#kissScreen{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(255,182,193,0.97);
+flex-direction:column;
+justify-content:center;
+align-items:center;
+font-family:'Great Vibes',cursive;
+font-size:2.5rem;
+animation:fadeIn 1s ease;
+}
+</style>
+</head>
+
+<body>
+
+<div id="page1" class="section active">
+<h1>Ready for a little secret? 💖</h1>
+<p>Enter the magic word 🐾</p>
+<input type="password" id="password"><br>
+<button onclick="unlock()">Unlock</button>
+</div>
+
+<div id="page2" class="section">
+<h1 class="bigText">HAPPY BIRTHDAY BABY!!! 🎂💖</h1>
+<p>You are my favorite person in the whole world ✨</p>
+<button onclick="nextPage(3)">Continue 💕</button>
+</div>
+
+<div id="page3" class="section">
+<h1>Our Little Memory 💕</h1>
+<img src="us.jpg" class="photo">
+<button onclick="nextPage(4)">Read My Letter 💌</button>
+</div>
+
+<div id="page4" class="section">
+<h1>To The Most Special Person…</h1>
+<p id="letter" style="max-width:650px;margin:auto;"></p>
+<button onclick="showKiss()">Exit</button>
+</div>
+
+<div id="kissScreen">
+<div>Wait… don’t leave without a kiss 😘</div>
+<div style="font-size:3rem;">💋💋💋</div>
+<div style="margin-top:20px;font-size:2rem;">
+I miss you so much 💕<br>
+I love you forever.<br>
+I will always be by your side, no matter what. 💖<br><br>
+Forever yours.
+</div>
+</div>
+
+<div class="track"></div>
+
+<script>
+const letterText = "Happy birthday to the person I wanna spend my whole life with. Happy birthday, babe. I hope this day brings you a lot of happiness and lots of love. I can't express how much you mean to me. And I know the things where we left off were not good. We got into a huge fight. I made you feel like crap and that was not right of me. And I'm truly sorry about that. But today I don't want your birthday to be about that. I want you to remember us and our happy times. I remember the first time we met in school and how things rolled out between us. I hope this birthday is better than any past ones you had. Although I know I'm not there with you, I'm always gonna be there no matter what. I just want you to enjoy your birthday. I'm just throwing everything on my mind right now over here. You're like some sort of addiction. I still get butterflies every time you call me baby. Whenever you talk to me, whenever you're sweet to me, whenever you tell me you love me — I get butterflies. I don't know what the future will bring or what life will throw at us, but I know we're gonna go through it together. Because your problem is also my problem. I think I found my person. Thank you for being with me. Thank you for being mine. I love you. I wish you the happiest birthday ever. I can't kiss you or hug you, but I'll be doing that virtually. Just think about me and I'll be there. I love you. I'm always gonna be here for you.";
+
+let i=0;
+function typeWriter(){
+if(i<letterText.length){
+document.getElementById("letter").innerHTML+=letterText.charAt(i);
+i++;
+setTimeout(typeWriter,35);
+}
+}
+
+function unlock(){
+if(document.getElementById("password").value==="MEOW"){
+createConfetti();
+nextPage(2);
+}else{
+alert("Oopsie! Wrong magic word 🐾");
+}
+}
+
+function nextPage(num){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById("page"+num).classList.add("active");
+if(num===4){ typeWriter(); }
+}
+
+function createHeart(){
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*25+15)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,400);
+
+function createConfetti(){
+for(let j=0;j<120;j++){
+const conf=document.createElement("div");
+conf.className="confetti";
+conf.style.left=Math.random()*100+"vw";
+conf.style.background=`hsl(${Math.random()*360},100%,75%)`;
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),4000);
+}
+}
+
+function createCar(){
+const car=document.createElement("div");
+car.className="car";
+car.innerHTML="🚗";
+document.body.appendChild(car);
+setTimeout(()=>car.remove(),8000);
+}
+setInterval(createCar,5000);
+
+function showKiss(){
+document.getElementById("kissScreen").style.display="flex";
+}
+</script>
+
+</body>
+</html>
