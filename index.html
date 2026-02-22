@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secret Birthday 💖</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 body{
@@ -40,19 +40,14 @@ to{opacity:1;transform:scale(1);}
 }
 
 h1{
-font-family:'Great Vibes',cursive;
-font-size:4rem;
+font-size:3rem;
 margin:20px 0;
-animation:glow 2s infinite alternate;
+font-weight:700;
 }
 
 .bigText{
-font-size:5rem;
-}
-
-@keyframes glow{
-from{text-shadow:0 0 10px #ff99c8;}
-to{text-shadow:0 0 30px #ff4da6;}
+font-size:3.2rem;
+font-weight:700;
 }
 
 button{
@@ -63,7 +58,7 @@ border-radius:30px;
 color:white;
 font-size:16px;
 cursor:pointer;
-margin-top:25px;
+margin-top:20px;
 box-shadow:0 0 25px rgba(255,105,180,0.7);
 transition:0.3s;
 }
@@ -88,44 +83,6 @@ animation:floatUp 6s linear infinite;
 100%{transform:translateY(-100vh);opacity:0;}
 }
 
-.confetti{
-position:fixed;
-width:8px;
-height:8px;
-top:-10px;
-animation:confettiFall 4s linear forwards;
-}
-
-@keyframes confettiFall{
-to{transform:translateY(110vh) rotate(360deg);}
-}
-
-.track{
-position:fixed;
-bottom:0;
-width:100%;
-height:60px;
-background:repeating-linear-gradient(
-to right,
-#ff99c8 0px,
-#ff99c8 20px,
-white 20px,
-white 40px
-);
-}
-
-.car{
-position:fixed;
-bottom:10px;
-font-size:45px;
-animation:drive 8s linear infinite;
-}
-
-@keyframes drive{
-0%{left:-100px;}
-100%{left:110%;}
-}
-
 .photo{
 width:280px;
 border-radius:25px;
@@ -144,8 +101,7 @@ background:rgba(255,182,193,0.97);
 flex-direction:column;
 justify-content:center;
 align-items:center;
-font-family:'Great Vibes',cursive;
-font-size:2.5rem;
+font-size:1.8rem;
 animation:fadeIn 1s ease;
 }
 </style>
@@ -153,35 +109,80 @@ animation:fadeIn 1s ease;
 
 <body>
 
+<!-- HACKER SCREEN -->
+<div id="hackerScreen" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+color:#00ff88;
+font-family:monospace;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;">
+<div id="hackerText"></div>
+<button onclick="enterSite()" style="margin-top:30px;display:none;" id="enterBtn">
+Access Granted 💖
+</button>
+</div>
+
+<!-- PASSWORD PAGE -->
 <div id="page1" class="section active">
 <h1>Ready for a little secret? 💖</h1>
 <p>Enter the magic word 🐾</p>
 <input type="password" id="password"><br>
+<p style="font-size:14px;margin-top:10px;">⚠ Password must be entered in ALL CAPS.</p>
 <button onclick="unlock()">Unlock</button>
 </div>
 
+<!-- BIRTHDAY PAGE -->
 <div id="page2" class="section">
 <h1 class="bigText">HAPPY BIRTHDAY BABY!!! 🎂💖</h1>
 <p>You are my favorite person in the whole world ✨</p>
 <button onclick="nextPage(3)">Continue 💕</button>
 </div>
 
+<!-- MEMORY PAGE -->
 <div id="page3" class="section">
 <h1>Our Little Memory 💕</h1>
-<img src="https://via.placeholder.com/300">
+<img src="us.jpg" class="photo"
+onerror="this.style.display='none';document.getElementById('fallback').style.display='block';">
+<p id="fallback" style="display:none;margin-top:20px;">
+Our cute picture goes here 🥺💗
+</p>
 <button onclick="nextPage(4)">Read My Letter 💌</button>
 </div>
 
+<!-- LETTER PAGE -->
 <div id="page4" class="section">
 <h1>To The Most Special Person…</h1>
 <p id="letter" style="max-width:650px;margin:auto;"></p>
-<button onclick="showKiss()">Exit</button>
+
+<h2 style="margin-top:40px;">Things I Love About You 💕</h2>
+<button onclick="randomLove()">Click To Find Out More 💖</button>
+<p id="loveReason"></p>
+
+<button onclick="sweetNote()">Open A Small Note 💗</button>
+<button onclick="nextPage(5)">One More Thing 💕</button>
 </div>
 
+<!-- FUTURE PAGE -->
+<div id="page5" class="section">
+<h1>Things I Want To Do With You 💕</h1>
+<p id="futureList" style="max-width:700px;margin:auto;line-height:1.8;"></p>
+<button onclick="revealFuture()">Click To Find Out More 💕</button>
+<button onclick="showKiss()">Forever With You 💖</button>
+</div>
+
+<!-- KISS SCREEN -->
 <div id="kissScreen">
 <div>Wait… don’t leave without a kiss 😘</div>
 <div style="font-size:3rem;">💋💋💋</div>
-<div style="margin-top:20px;font-size:2rem;">
+<div style="margin-top:20px;">
 I miss you so much 💕<br>
 I love you forever.<br>
 I will always be by your side, no matter what. 💖<br><br>
@@ -189,23 +190,38 @@ Forever yours.
 </div>
 </div>
 
-<div class="track"></div>
-
 <script>
-const letterText = "Happy birthday to the person I wanna spend my whole life with. Happy birthday, babe. I hope this day brings you a lot of happiness and lots of love. I can't express how much you mean to me. And I know the things where we left off were not good. We got into a huge fight. I made you feel like crap and that was not right of me. And I'm truly sorry about that. But today I don't want your birthday to be about that. I want you to remember us and our happy times. I remember the first time we met in school and how things rolled out between us. I hope this birthday is better than any past ones you had. Although I know I'm not there with you, I'm always gonna be there no matter what. I just want you to enjoy your birthday. I'm just throwing everything on my mind right now over here. You're like some sort of addiction. I still get butterflies every time you call me baby. Whenever you talk to me, whenever you're sweet to me, whenever you tell me you love me — I get butterflies. I don't know what the future will bring or what life will throw at us, but I know we're gonna go through it together. Because your problem is also my problem. I think I found my person. Thank you for being with me. Thank you for being mine. I love you. I wish you the happiest birthday ever. I can't kiss you or hug you, but I'll be doing that virtually. Just think about me and I'll be there. I love you. I'm always gonna be here for you.";
 
-let i=0;
-function typeWriter(){
-if(i<letterText.length){
-document.getElementById("letter").innerHTML+=letterText.charAt(i);
-i++;
-setTimeout(typeWriter,35);
+/* HACKER INTRO */
+const hackerLines = [
+"Accessing Khushi's Heart Database...",
+"Decrypting love files...",
+"Bypassing emotional firewall...",
+"Loading secret memories...",
+"Verifying soul connection...",
+"ACCESS GRANTED ❤️"
+];
+
+let lineIndex = 0;
+
+function typeHacker(){
+if(lineIndex < hackerLines.length){
+document.getElementById("hackerText").innerHTML += hackerLines[lineIndex] + "<br>";
+lineIndex++;
+setTimeout(typeHacker, 900);
+}else{
+document.getElementById("enterBtn").style.display="block";
 }
 }
+typeHacker();
 
+function enterSite(){
+document.getElementById("hackerScreen").style.display="none";
+}
+
+/* PASSWORD */
 function unlock(){
 if(document.getElementById("password").value==="MEOW"){
-createConfetti();
 nextPage(2);
 }else{
 alert("Oopsie! Wrong magic word 🐾");
@@ -218,7 +234,52 @@ document.getElementById("page"+num).classList.add("active");
 if(num===4){ typeWriter(); }
 }
 
-function createHeart(){
+/* FULL LETTER RESTORED */
+const letterText = `Happy birthday to the person I wanna spend my whole life with. Happy birthday, babe. I hope this day brings you a lot of happiness and lots of love. I can't express how much you mean to me. And I know the things where we left off were not good. We got into a huge fight. I made you feel like crap and that was not right of me. And I'm truly sorry about that. But today I don't want your birthday to be about that. I want you to remember us and our happy times. I remember the first time we met in school and how things rolled out between us. I hope this birthday is better than any past ones you had. Although I know I'm not there with you, I'm always gonna be there no matter what. I just want you to enjoy your birthday. I'm just throwing everything on my mind right now over here. You're like some sort of addiction. I still get butterflies every time you call me baby. Whenever you talk to me, whenever you're sweet to me, whenever you tell me you love me — I get butterflies. I don't know what the future will bring or what life will throw at us, but I know we're gonna go through it together. Because your problem is also my problem. I think I found my person. Thank you for being with me. Thank you for being mine. I love you. I wish you the happiest birthday ever. I can't kiss you or hug you, but I'll be doing that virtually. Just think about me and I'll be there. I love you. I'm always gonna be here for you.`;
+
+let i=0;
+function typeWriter(){
+if(i<letterText.length){
+document.getElementById("letter").innerHTML+=letterText.charAt(i);
+i++;
+setTimeout(typeWriter,25);
+}
+}
+
+/* LOVE GENERATOR */
+const reasons = [
+"You’re loyal.",
+"You’re cute.",
+"You always compliment me.",
+"I love your hair.",
+"I love your smile.",
+"You spend so much time with me.",
+"You don’t complain.",
+"I love the way you text me.",
+"I love how detailed you text me. It’s cute."
+];
+
+let usedReasons = [];
+
+function randomLove(){
+if(usedReasons.length >= reasons.length){
+document.getElementById("loveReason").innerHTML += "<br>That’s all… but I could keep going forever 💖";
+return;
+}
+
+for(let k=0;k<2;k++){
+let available = reasons.filter(r => !usedReasons.includes(r));
+if(available.length===0) return;
+let choice = available[Math.floor(Math.random()*available.length)];
+usedReasons.push(choice);
+document.getElementById("loveReason").innerHTML += "<br>"+choice;
+}
+
+burstHearts();
+}
+
+function burstHearts(){
+for(let j=0;j<15;j++){
 const heart=document.createElement("div");
 heart.className="heart";
 heart.innerHTML="💖";
@@ -227,35 +288,48 @@ heart.style.fontSize=(Math.random()*25+15)+"px";
 document.body.appendChild(heart);
 setTimeout(()=>heart.remove(),6000);
 }
-setInterval(createHeart,400);
-
-function createConfetti(){
-for(let j=0;j<120;j++){
-const conf=document.createElement("div");
-conf.className="confetti";
-conf.style.left=Math.random()*100+"vw";
-conf.style.background=`hsl(${Math.random()*360},100%,75%)`;
-document.body.appendChild(conf);
-setTimeout(()=>conf.remove(),4000);
-}
 }
 
-function createCar(){
-const car=document.createElement("div");
-car.className="car";
-car.innerHTML="🚗";
-document.body.appendChild(car);
-setTimeout(()=>car.remove(),8000);
+/* SWEET NOTE */
+function sweetNote(){
+alert("You are genuinely the sweetest and the nicest guy I’ve ever met. You’re so perfect in every way and form. Even looking at you brightens my day so much. You make me the happiest I’ve ever been. I don’t even know how to put it into words. You make me feel the way that no one has ever been able to make me feel.");
 }
-setInterval(createCar,5000);
+
+/* FUTURE 5 AT A TIME */
+const futureThings = [
+"I want to hold your hands.",
+"I want to go on walks with you.",
+"I want to play with my dogs together.",
+"I want to run into a crowd just to find you.",
+"I want to dance in the rain with you.",
+"I want you to come camping with me.",
+"I want you to smile at me.",
+"I want to go on a picnic with you.",
+"I want to go get ice cream together.",
+"I want to go to the arcade together.",
+"I want to learn skateboarding together.",
+"I want you to hug me tightly and say that you love me.",
+"I want to act crazy together.",
+"I want you to be proud to be mine because I know I will.",
+"I want to hang out at the park and just have fun.",
+"I want to go on double dates with our friends."
+];
+
+let futureIndex=0;
+
+function revealFuture(){
+for(let i=0;i<5;i++){
+if(futureIndex<futureThings.length){
+document.getElementById("futureList").innerHTML += futureThings[futureIndex]+"<br>";
+futureIndex++;
+}
+}
+}
 
 function showKiss(){
 document.getElementById("kissScreen").style.display="flex";
 }
+
 </script>
-
 </body>
-
 </html>
-
-
